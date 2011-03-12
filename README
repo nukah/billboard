@@ -1,0 +1,6 @@
+Billboard WSGI functionality test app.
+
+Requirements:
+ - bottle
+ - sqlite
+ - sqlalchemy
