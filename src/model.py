@@ -36,4 +36,4 @@ class Events(Base):
         print self.title
         
     def __repr__(self):
-        return "<Event('%s','%s','%s','%s','%s')>" % (self.id, self.name, self.place, self.date, self.text)
+        return "<Event('%s','%s','%s','%s','%s')>" % (self.id, self.title, self,link, self.date, self.desc)
