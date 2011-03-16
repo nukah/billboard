@@ -1,19 +1,19 @@
 # -*- coding: utf-8 -*-
-import feedparser
+import feedparser, time
 
 testfeed = "http://www.glinka.museum/ezg_calendar/calendar.php?action=rss&target=_blank&linktype=1&urltitle=&"
-mapping = {
-            "title" : "title",
-            "place" : "Gnesinka",
-            "description" : "description",
-            "filter" : u"Концерт"
-}
-place = mapping['place']
-filter = mapping['filter'] if mapping['filter'] else None
-feed = feedparser.parse(testfeed)
+def form_element(entry):
+    element = {}
+    element['title'] = entry.title
+    element['date'] = time.strftime('%d/%m/%Y %H:%M', entry.updated_parsed)
+    element['description'] = entry.summary
+    element['link'] = entry.link
+    return element
 
-for entry in feed.entries:
-    if filter and filter in entry.title:
-        print "%s %s @ %s" % (entry.title, entry.updated, place)
-        if entry.title_detail:
-            print entry.title_detail
+def attain_feed(url):
+    result = []
+    feed = feedparser.parse(url)
+    for entry in feed.entries:
+            element = form_element(entry)
+            result.append(element)
+    return result
