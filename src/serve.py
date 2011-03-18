@@ -1,4 +1,4 @@
-from bottle import request, route, template, app, debug, run
+from bottle import request, route, template, app, debug, run, redirect
 from model import Database, Session, Events
 from board import attain_feed
 from time import mktime, strptime
@@ -24,7 +24,8 @@ debug(True)
 
 @route('/')
 def index_page():
-   return template('index')
+    current_events = session.query(Events).all()
+    return template('entry', result = current_events)
 
 @route('/check', method='POST')
 def send_form():
@@ -43,13 +44,20 @@ def edit_form():
             try:
                 date = datetime.fromtimestamp(mktime(strptime(element['date'], '%d/%m/%Y %H:%M')))
             except ValueError, e:
-                return 'Error in time data'
-            new = Events(element['title'], \
-                         element['link'], \
-                         date, \
-                         element['descr'])
+                return 'Error in time data. Event:%s %s, Date: %s' % (index, element['title'], element['date'])
+            new = Events(element['title'], element['link'], date, element['descr'])
             session.add(new)
     session.commit()
-    return template('edit', r = request.forms)
+    redirect('/')
 
-run(reloader=True)
+@route('/choose', method='POST')
+def choose_type():
+    event_status = request.forms.get('event')
+    feed_status = request.forms.get('feed')
+    if event_status:
+        return template('event')
+    elif feed_status:
+        return template('index')
+    else:
+        return 'Wrong type selected'
+run()
