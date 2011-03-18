@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 import feedparser, time
 
-testfeed = "http://www.glinka.museum/ezg_calendar/calendar.php?action=rss&target=_blank&linktype=1&urltitle=&"
 def form_element(entry):
     element = {}
     element['title'] = entry.title

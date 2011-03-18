@@ -33,7 +33,6 @@ class Events(Base):
         self.link = link
         self.date = date
         self.desc = text.decode('utf-8') or ''
-        print self.title
         
     def __repr__(self):
         return "<Event('%s','%s','%s','%s','%s')>" % (self.id, self.title, self.link, self.date, self.desc)
