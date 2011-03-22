@@ -4,7 +4,8 @@ import feedparser, time
 def form_element(entry):
     element = {}
     element['title'] = entry.title
-    element['date'] = time.strftime('%d/%m/%Y %H:%M', entry.updated_parsed)
+    element['date'] = time.strftime('%d/%m/%Y', entry.updated_parsed)
+    element['time'] = time.strftime('%H:%M', entry.updated_parsed)
     element['description'] = entry.summary
     element['link'] = entry.link
     return element

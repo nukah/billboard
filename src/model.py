@@ -26,12 +26,14 @@ class Events(Base):
     title = Column(String)
     link = Column(String)
     date = Column(DateTime)
+    time = Column(DateTime)
     desc = Column(Text)
     
-    def __init__(self, title, link, date, text = None):
+    def __init__(self, title = None, link = None, date = None, time = None, text = None):
         self.title = title.decode('utf-8')
         self.link = link
         self.date = date
+        self.time = time
         self.desc = text.decode('utf-8') or ''
         
     def __repr__(self):

@@ -16,7 +16,7 @@ class DatabaseMiddleware(object):
         return self.app(env, start)
 
 def get_element_by_id(index):
-    fields = ['date', 'title', 'descr', 'status', 'link']
+    fields = ['date', 'time','pic', 'title', 'descr', 'status', 'link']
     return [field+str(index) for field in fields]
 
 app = DatabaseMiddleware(app())
@@ -42,10 +42,15 @@ def edit_form():
         element = dict([(key.rstrip(str(index)),request.forms.get(key)) for key in keys])
         if element['status'] == 'on':
             try:
-                date = datetime.fromtimestamp(mktime(strptime(element['date'], '%d/%m/%Y %H:%M')))
+                date = datetime.fromtimestamp(mktime(strptime(element['date'], '%d/%m/%Y')))
+                time = datetime.fromtimestamp(mktime(strptime(element['date'], '%H:%M')))
             except ValueError, e:
                 return 'Error in time data. Event:%s %s, Date: %s' % (index, element['title'], element['date'])
-            new = Events(element['title'], element['link'], date, element['descr'])
+            picture = request.files.get('pic'+index)
+            if picture:
+################# FILE SAVE PROCEDURE ################
+############## TODO: add picture to model, default picture if none is specified.
+            new = Events(title = element['title'], link = element['link'], date = date, time = time, desc = element['descr'])
             session.add(new)
     session.commit()
     redirect('/')
